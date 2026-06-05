@@ -5,45 +5,440 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cognitive Interpretability of Foundation Models — NeurIPS 2026 Workshop</title>
   <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #1b2a4a;
+      --blue: #2d5be3;
+      --light-blue: #e8eef8;
+      --grey: #f5f6f8;
+      --text: #222;
+      --muted: #555;
+    }
+
     body {
-      font-family: Georgia, serif;
-      max-width: 700px;
-      margin: 80px auto;
-      padding: 0 20px;
-      color: #222;
-      line-height: 1.6;
+      font-family: 'Georgia', serif;
+      color: var(--text);
+      line-height: 1.7;
     }
-    h1 { font-size: 1.8rem; margin-bottom: 0.2em; }
-    .subtitle { color: #555; font-size: 1rem; margin-bottom: 2em; }
-    .badge {
-      display: inline-block;
-      background: #1a1a2e;
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--navy);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+    nav .site-title {
       color: #fff;
-      font-family: monospace;
-      font-size: 0.8rem;
-      padding: 3px 8px;
-      border-radius: 3px;
-      margin-bottom: 2em;
+      font-size: 0.9rem;
+      font-family: sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-decoration: none;
+      white-space: nowrap;
     }
-    p { margin: 0 0 1em; }
-    footer { margin-top: 3em; color: #999; font-size: 0.85rem; }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.6rem;
+    }
+    nav ul a {
+      color: #ccd6f6;
+      text-decoration: none;
+      font-family: sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+    nav ul a:hover { color: #fff; }
+
+    /* HERO */
+    #home {
+      background: linear-gradient(135deg, var(--navy) 0%, #2d4080 100%);
+      color: #fff;
+      text-align: center;
+      padding: 90px 2rem 80px;
+    }
+    #home .tag {
+      font-family: sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #a8bfff;
+      margin-bottom: 1rem;
+    }
+    #home h1 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: normal;
+      line-height: 1.3;
+      max-width: 750px;
+      margin: 0 auto 1rem;
+    }
+    #home .meta {
+      font-family: sans-serif;
+      font-size: 1rem;
+      color: #c0cff8;
+      margin-top: 0.5rem;
+    }
+    #home .meta strong { color: #fff; }
+
+    /* SECTIONS */
+    section { padding: 64px 2rem; }
+    section:nth-child(even) { background: var(--grey); }
+    .container { max-width: 860px; margin: 0 auto; }
+
+    h2 {
+      font-size: 1.6rem;
+      font-weight: normal;
+      color: var(--navy);
+      border-bottom: 2px solid var(--blue);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1.4rem;
+    }
+    h3 {
+      font-size: 1.05rem;
+      color: var(--navy);
+      margin: 1.4rem 0 0.4rem;
+      font-family: sans-serif;
+    }
+    p { margin-bottom: 1em; color: var(--text); }
+    ul { padding-left: 1.4rem; margin-bottom: 1em; }
+    li { margin-bottom: 0.3em; }
+
+    /* SPEAKERS GRID */
+    .speaker-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .speaker-card {
+      text-align: center;
+      font-family: sans-serif;
+    }
+    .speaker-card img {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--light-blue);
+      border: 3px solid var(--light-blue);
+      display: block;
+      margin: 0 auto 0.6rem;
+    }
+    .speaker-card .name {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--navy);
+    }
+    .speaker-card .name a { color: inherit; text-decoration: none; }
+    .speaker-card .name a:hover { text-decoration: underline; }
+    .speaker-card .affil {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 0.1rem;
+    }
+    .speaker-card .topic {
+      font-size: 0.75rem;
+      color: var(--blue);
+      margin-top: 0.3rem;
+      font-style: italic;
+    }
+    .badge-confirmed {
+      display: inline-block;
+      font-size: 0.68rem;
+      background: #d4edda;
+      color: #155724;
+      border-radius: 3px;
+      padding: 1px 5px;
+      margin-top: 0.3rem;
+    }
+    .badge-invited {
+      display: inline-block;
+      font-size: 0.68rem;
+      background: #fff3cd;
+      color: #856404;
+      border-radius: 3px;
+      padding: 1px 5px;
+      margin-top: 0.3rem;
+    }
+
+    /* ORGANISERS */
+    .organiser-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.2rem;
+      margin-top: 1.2rem;
+    }
+    .organiser-card {
+      background: #fff;
+      border: 1px solid #dde3f0;
+      border-radius: 6px;
+      padding: 1rem 1.1rem;
+      font-family: sans-serif;
+    }
+    .organiser-card .name { font-weight: 600; font-size: 0.95rem; color: var(--navy); }
+    .organiser-card .name a { color: inherit; text-decoration: none; }
+    .organiser-card .name a:hover { text-decoration: underline; }
+    .organiser-card .affil { font-size: 0.82rem; color: var(--muted); margin-top: 0.2rem; }
+
+    /* DATES TABLE */
+    .dates {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: sans-serif;
+      font-size: 0.9rem;
+      margin-top: 1rem;
+    }
+    .dates td { padding: 0.55rem 0.8rem; border-bottom: 1px solid #e0e5f0; }
+    .dates td:first-child { color: var(--muted); white-space: nowrap; }
+    .dates td:last-child { font-weight: 500; }
+
+    /* FOOTER */
+    footer {
+      background: var(--navy);
+      color: #8899cc;
+      text-align: center;
+      font-family: sans-serif;
+      font-size: 0.8rem;
+      padding: 1.8rem 1rem;
+    }
+
+    @media (max-width: 600px) {
+      nav ul { gap: 0.9rem; }
+      nav ul a { font-size: 0.75rem; }
+    }
   </style>
 </head>
 <body>
-  <div class="badge">NeurIPS 2026 Workshop</div>
+
+<nav>
+  <a href="#home" class="site-title">CogInterp @ NeurIPS 2026</a>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#speakers">Speakers</a></li>
+    <li><a href="#organisers">Organisers</a></li>
+    <li><a href="#submission">Submission</a></li>
+    <li><a href="#logistics">Logistics</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+  <div class="tag">NeurIPS 2026 Workshop</div>
   <h1>Cognitive Interpretability of Foundation Models</h1>
-  <p class="subtitle">December 2026 &mdash; Paris</p>
-  <p>
-    Website coming soon. This workshop brings together researchers from cognitive science,
-    computational neuroscience, and mechanistic interpretability to build a unified
-    science of foundation model cognition, behavior, and internal representations.
+  <p class="meta"><strong>December 2026</strong> &nbsp;&bull;&nbsp; Paris, France</p>
+  <p class="meta" style="margin-top:0.5rem; font-size:0.88rem;">
+    Building Cognitive Interpretability as the unified science of foundation model cognition, behavior, and internal representations.
   </p>
-  <p>
-    <strong>Submission deadline:</strong> August 29, 2026 (AoE)<br>
-    <strong>Decisions:</strong> September 22, 2026
-  </p>
-  <footer>
-    Organized by Marta Kryven, Yewen Pu, Cedric Colas, Momchil Tomov, and Ivan Titov.
-  </footer>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <h2>About the Workshop</h2>
+    <p>
+      Understanding latent cognitive capabilities, behaviors, and learned internal representations of foundation
+      models has emerged as a central challenge in AI research, with broad implications for the science of
+      intelligence, ML theory, and AI alignment. This workshop provides a dedicated venue for researchers from
+      cognitive science, computational neuroscience, and mechanistic interpretability to build new collaborations
+      and establish common methodological standards under the umbrella of <strong>cognitive interpretability</strong>.
+    </p>
+
+    <h3>Cognitive Capabilities of Foundation Models</h3>
+    <p>
+      Foundation models serve as <em>model organisms</em> for the science of intelligence — systems that allow
+      systematic manipulation of task conditions to isolate computational principles driving behavior. Despite
+      exciting recent work, we still lack principled measurement frameworks for foundation models whose cognitive
+      capabilities may fundamentally differ from those of humans.
+    </p>
+
+    <h3>Understanding Internal Representations</h3>
+    <p>
+      Just as zebra finch models in biology provide access to neural circuits, foundation models expose internal
+      states that can be conveniently experimented with at scale. Tools from representational similarity analysis,
+      neural alignment, and mechanistic interpretability offer a complementary lens on which internal states can
+      be measured.
+    </p>
+
+    <h3>Topics of Interest</h3>
+    <ul>
+      <li>Comparing human and LLM-based agents under matched task constraints to characterize similarities and differences in behaviour and representations</li>
+      <li>Extracting latent inductive biases and characterizing emerging cognitive capabilities in foundation models</li>
+      <li>Using foundation models to test theories of cognition at scale</li>
+      <li>Examining human-AI performance gaps as diagnostic signals for representational structure</li>
+      <li>Representational similarity analysis and neural alignment as tools for model interpretation</li>
+      <li>Using computational cognitive models as baselines for evaluating and interpreting foundation model behavior (causal reasoning, abstraction learning)</li>
+      <li>Identifying internal structures that support cognitive-like computations in foundation models</li>
+    </ul>
+  </div>
+</section>
+
+<!-- SPEAKERS -->
+<section id="speakers">
+  <div class="container">
+    <h2>Invited Speakers</h2>
+    <div class="speaker-grid">
+
+      <div class="speaker-card">
+        <img src="https://nbb.cornell.edu/sites/default/files/styles/square_thumbnail/public/2022-09/weinan-sun.jpg" alt="Weinan Sun" onerror="this.src='https://ui-avatars.com/api/?name=Weinan+Sun&size=110&background=c7d4f5&color=1b2a4a'">
+        <div class="name"><a href="https://nbb.cornell.edu/weinan-sun" target="_blank">Weinan Sun</a></div>
+        <div class="affil">Cornell University</div>
+        <div class="topic">Compositional generalization in foundation models</div>
+        <span class="badge-confirmed">Confirmed</span>
+      </div>
+
+      <div class="speaker-card">
+        <img src="https://ui-avatars.com/api/?name=Marcel+Binz&size=110&background=c7d4f5&color=1b2a4a" alt="Marcel Binz">
+        <div class="name"><a href="https://marcelbinz.github.io/" target="_blank">Marcel Binz</a></div>
+        <div class="affil">Helmholtz Munich</div>
+        <div class="topic">In search of the cognitive core</div>
+        <span class="badge-confirmed">Confirmed</span>
+      </div>
+
+      <div class="speaker-card">
+        <img src="https://ui-avatars.com/api/?name=Chris+Summerfield&size=110&background=c7d4f5&color=1b2a4a" alt="Chris Summerfield">
+        <div class="name"><a href="https://csummerfield.github.io/personal_website/" target="_blank">Chris Summerfield</a></div>
+        <div class="affil">Oxford &amp; AISI</div>
+        <div class="topic">Bridging biological and artificial reasoning</div>
+        <span class="badge-confirmed">Confirmed</span>
+      </div>
+
+      <div class="speaker-card">
+        <img src="https://ui-avatars.com/api/?name=Kimberly+Stachenfeld&size=110&background=c7d4f5&color=1b2a4a" alt="Kimberly Stachenfeld">
+        <div class="name"><a href="https://neurokim.com/" target="_blank">Kimberly Stachenfeld</a></div>
+        <div class="affil">Google DeepMind</div>
+        <div class="topic">Automated cognitive modeling for humans and animals</div>
+        <span class="badge-confirmed">Confirmed</span>
+      </div>
+
+      <div class="speaker-card">
+        <img src="https://ui-avatars.com/api/?name=Tessa+Verhoef&size=110&background=c7d4f5&color=1b2a4a" alt="Tessa Verhoef">
+        <div class="name"><a href="https://www.universiteitleiden.nl/en/staffmembers/tessa-verhoef" target="_blank">Tessa Verhoef</a></div>
+        <div class="affil">Leiden University</div>
+        <div class="topic">Inductive and gestalt biases in foundation models</div>
+        <span class="badge-confirmed">Confirmed</span>
+      </div>
+
+      <div class="speaker-card">
+        <img src="https://ui-avatars.com/api/?name=Eric+Schulz&size=110&background=c7d4f5&color=1b2a4a" alt="Eric Schulz">
+        <div class="name"><a href="https://hcai-munich.com/eric.html" target="_blank">Eric Schulz</a></div>
+        <div class="affil">Helmholtz Munich</div>
+        <div class="topic">Toward measurement science in AI</div>
+        <span class="badge-confirmed">Confirmed</span>
+      </div>
+
+      <div class="speaker-card">
+        <img src="https://ui-avatars.com/api/?name=Mor+Geva&size=110&background=e8e0c7&color=4a3a1b" alt="Mor Geva">
+        <div class="name"><a href="https://mega002.github.io/" target="_blank">Mor Geva</a></div>
+        <div class="affil">Tel Aviv University</div>
+        <div class="topic">Mechanistic interpretability of knowledge in LMs</div>
+        <span class="badge-invited">Invited</span>
+      </div>
+
+    </div>
+
+    <h3 style="margin-top:2rem;">Panelists</h3>
+    <p style="font-family:sans-serif; font-size:0.9rem;">
+      Been Kim (Google DeepMind) &nbsp;&bull;&nbsp;
+      Marcelo Mattar (New York University) &nbsp;&bull;&nbsp;
+      Chris Summerfield (Oxford &amp; AISI) &nbsp;&bull;&nbsp;
+      Mor Geva (Tel Aviv University)
+    </p>
+  </div>
+</section>
+
+<!-- ORGANISERS -->
+<section id="organisers">
+  <div class="container">
+    <h2>Organisers</h2>
+    <div class="organiser-grid">
+
+      <div class="organiser-card">
+        <div class="name"><a href="https://marta-kryven.github.io" target="_blank">Marta Kryven</a></div>
+        <div class="affil">Assistant Professor, Dalhousie University, Canada</div>
+      </div>
+
+      <div class="organiser-card">
+        <div class="name"><a href="https://evanthebouncy.github.io/" target="_blank">Yewen Pu</a></div>
+        <div class="affil">Assistant Professor, Nanyang Technological University, Singapore</div>
+      </div>
+
+      <div class="organiser-card">
+        <div class="name"><a href="https://cedriccolas.com/" target="_blank">Cedric Colas</a></div>
+        <div class="affil">Postdoctoral Researcher, Sorbonne &amp; Inria, France</div>
+      </div>
+
+      <div class="organiser-card">
+        <div class="name"><a href="https://momchiltomov.com/" target="_blank">Momchil Tomov</a></div>
+        <div class="affil">Incoming Assistant Professor, Boston College (Harvard)</div>
+      </div>
+
+      <div class="organiser-card">
+        <div class="name"><a href="http://ivan-titov.org" target="_blank">Ivan Titov</a></div>
+        <div class="affil">Professor, University of Edinburgh &amp; University of Amsterdam</div>
+      </div>
+
+    </div>
+
+    <p style="margin-top:1.4rem; font-family:sans-serif; font-size:0.85rem; color:var(--muted);">
+      <strong>Advisory Committee:</strong> Pierre-Yves Oudeyer (Inria, University of Bordeaux) &nbsp;&bull;&nbsp; Leyla Isik (Johns Hopkins University)
+    </p>
+  </div>
+</section>
+
+<!-- SUBMISSION -->
+<section id="submission">
+  <div class="container">
+    <h2>Submission</h2>
+    <p>
+      We invite submissions of contributed papers focusing on cognitive interpretability of foundation models.
+      Each submission will receive at least 3 reviews from our program committee of 60 members.
+      Outstanding submissions will be selected for spotlight talks (5-min talk + 5-min Q&amp;A).
+    </p>
+    <p>Details on the submission portal and format will be posted here upon workshop acceptance.</p>
+
+    <table class="dates">
+      <tr><td>Submission deadline</td><td>August 29, 2026 (AoE)</td></tr>
+      <tr><td>Decisions</td><td>September 22, 2026 (AoE)</td></tr>
+      <tr><td>Camera-ready deadline</td><td>October 8, 2026 (AoE)</td></tr>
+      <tr><td>Workshop date</td><td>December 12 or 13, 2026</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- LOGISTICS -->
+<section id="logistics">
+  <div class="container">
+    <h2>Logistics</h2>
+
+    <h3>Venue</h3>
+    <p>Co-located with NeurIPS 2026. Location preference: <strong>Paris, France</strong> (Atlanta as second alternative).</p>
+
+    <h3>Schedule (Tentative)</h3>
+    <p>The workshop includes 7 keynote talks, two poster sessions, and 3 spotlight talks selected from outstanding paper submissions. Each keynote is 30 minutes with a 5-minute Q&amp;A.</p>
+
+    <h3>Recording</h3>
+    <p>With speaker consent, all presentations will be recorded and made publicly available on the workshop website.</p>
+
+    <h3>Contact</h3>
+    <p style="font-family:sans-serif; font-size:0.9rem;">
+      For inquiries, contact the organizers at
+      <a href="mailto:marta.kryven@dal.ca">marta.kryven@dal.ca</a> or
+      <a href="mailto:yewen.pu@ntu.edu.sg">yewen.pu@ntu.edu.sg</a>.
+    </p>
+  </div>
+</section>
+
+<footer>
+  <p>Cognitive Interpretability of Foundation Models &mdash; NeurIPS 2026 Workshop</p>
+</footer>
+
 </body>
 </html>
