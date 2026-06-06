@@ -61,10 +61,23 @@
 
     /* HERO */
     #home {
-      background: linear-gradient(135deg, #2a2416 0%, #3d3420 100%);
+      position: relative;
+      overflow: hidden;
+      background: #2a2416;
       color: #f5edd8;
       text-align: center;
       padding: 90px 2rem 80px;
+    }
+    #banner-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .hero-text {
+      position: relative;
+      z-index: 1;
     }
     #home .tag {
       font-family: sans-serif;
@@ -185,6 +198,14 @@
       padding: 1rem 1.1rem;
       font-family: sans-serif;
     }
+    .organiser-card { display: flex; align-items: center; gap: 0.9rem; }
+    .organiser-card img {
+      width: 58px; height: 58px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 2px solid var(--light-blue);
+    }
     .organiser-card .name { font-weight: 600; font-size: 0.95rem; color: var(--navy); }
     .organiser-card .name a { color: inherit; text-decoration: none; }
     .organiser-card .name a:hover { text-decoration: underline; }
@@ -221,12 +242,15 @@
 
 <!-- HERO -->
 <section id="home">
-  <div class="tag">NeurIPS 2026 Workshop</div>
-  <h1>Cognitive Interpretability of Foundation Models</h1>
-  <p class="meta"><strong>December 2026</strong> &nbsp;&bull;&nbsp; Paris, France</p>
-  <p class="meta" style="margin-top:0.5rem; font-size:0.88rem;">
-    Building Cognitive Interpretability as the unified science of foundation model cognition, behavior, and internal representations.
-  </p>
+  <canvas id="banner-canvas"></canvas>
+  <div class="hero-text">
+    <div class="tag">NeurIPS 2026 Workshop</div>
+    <h1>Cognitive Interpretability of Foundation Models</h1>
+    <p class="meta"><strong>December 2026</strong> &nbsp;&bull;&nbsp; Paris, France</p>
+    <p class="meta" style="margin-top:0.5rem; font-size:0.88rem;">
+      Building Cognitive Interpretability as the unified science of foundation model cognition, behavior, and internal representations.
+    </p>
+  </div>
 </section>
 
 <!-- ABOUT -->
@@ -277,7 +301,7 @@
     <div class="speaker-grid">
 
       <div class="speaker-card">
-        <img src="https://nbb.cornell.edu/sites/default/files/styles/square_thumbnail/public/2022-09/weinan-sun.jpg" alt="Weinan Sun" onerror="this.src='https://ui-avatars.com/api/?name=Weinan+Sun&size=110&background=e8dcc8&color=2a2416'">
+        <img src="assets/photos/weinan.jpg" alt="Weinan Sun">
         <div class="name"><a href="https://nbb.cornell.edu/weinan-sun" target="_blank">Weinan Sun</a></div>
         <div class="affil">Cornell University</div>
         <div class="topic">Compositional generalization in foundation models</div>
@@ -285,7 +309,7 @@
       </div>
 
       <div class="speaker-card">
-        <img src="https://ui-avatars.com/api/?name=Marcel+Binz&size=110&background=e8dcc8&color=2a2416" alt="Marcel Binz">
+        <img src="assets/photos/marcel.jpg" alt="Marcel Binz">
         <div class="name"><a href="https://marcelbinz.github.io/" target="_blank">Marcel Binz</a></div>
         <div class="affil">Helmholtz Munich</div>
         <div class="topic">In search of the cognitive core</div>
@@ -293,7 +317,7 @@
       </div>
 
       <div class="speaker-card">
-        <img src="https://ui-avatars.com/api/?name=Chris+Summerfield&size=110&background=e8dcc8&color=2a2416" alt="Chris Summerfield">
+        <img src="assets/photos/chris.jpg" alt="Chris Summerfield">
         <div class="name"><a href="https://csummerfield.github.io/personal_website/" target="_blank">Chris Summerfield</a></div>
         <div class="affil">Oxford &amp; AISI</div>
         <div class="topic">Bridging biological and artificial reasoning</div>
@@ -301,7 +325,7 @@
       </div>
 
       <div class="speaker-card">
-        <img src="https://ui-avatars.com/api/?name=Kimberly+Stachenfeld&size=110&background=e8dcc8&color=2a2416" alt="Kimberly Stachenfeld">
+        <img src="assets/photos/kimberly.jpg" alt="Kimberly Stachenfeld">
         <div class="name"><a href="https://neurokim.com/" target="_blank">Kimberly Stachenfeld</a></div>
         <div class="affil">Google DeepMind</div>
         <div class="topic">Automated cognitive modeling for humans and animals</div>
@@ -309,7 +333,7 @@
       </div>
 
       <div class="speaker-card">
-        <img src="https://ui-avatars.com/api/?name=Tessa+Verhoef&size=110&background=e8dcc8&color=2a2416" alt="Tessa Verhoef">
+        <img src="assets/photos/tessa.jpg" alt="Tessa Verhoef">
         <div class="name"><a href="https://www.universiteitleiden.nl/en/staffmembers/tessa-verhoef" target="_blank">Tessa Verhoef</a></div>
         <div class="affil">Leiden University</div>
         <div class="topic">Inductive and gestalt biases in foundation models</div>
@@ -317,7 +341,7 @@
       </div>
 
       <div class="speaker-card">
-        <img src="https://ui-avatars.com/api/?name=Eric+Schulz&size=110&background=e8dcc8&color=2a2416" alt="Eric Schulz">
+        <img src="assets/photos/eric.jpg" alt="Eric Schulz">
         <div class="name"><a href="https://hcai-munich.com/eric.html" target="_blank">Eric Schulz</a></div>
         <div class="affil">Helmholtz Munich</div>
         <div class="topic">Toward measurement science in AI</div>
@@ -325,7 +349,7 @@
       </div>
 
       <div class="speaker-card">
-        <img src="https://ui-avatars.com/api/?name=Mor+Geva&size=110&background=e8dcc8&color=2a2416" alt="Mor Geva">
+        <img src="assets/photos/mor.jpg" alt="Mor Geva">
         <div class="name"><a href="https://mega002.github.io/" target="_blank">Mor Geva</a></div>
         <div class="affil">Tel Aviv University</div>
         <div class="topic">Mechanistic interpretability of knowledge in LMs</div>
@@ -335,12 +359,33 @@
     </div>
 
     <h3 style="margin-top:2rem;">Panelists</h3>
-    <p style="font-family:sans-serif; font-size:0.9rem;">
-      Been Kim (Google DeepMind) &nbsp;&bull;&nbsp;
-      Marcelo Mattar (New York University) &nbsp;&bull;&nbsp;
-      Chris Summerfield (Oxford &amp; AISI) &nbsp;&bull;&nbsp;
-      Mor Geva (Tel Aviv University)
-    </p>
+    <div class="speaker-grid" style="margin-top:1rem;">
+
+      <div class="speaker-card">
+        <img src="assets/photos/been.jpeg" alt="Been Kim">
+        <div class="name"><a href="https://beenkim.github.io/" target="_blank">Been Kim</a></div>
+        <div class="affil">Google DeepMind</div>
+      </div>
+
+      <div class="speaker-card">
+        <img src="assets/photos/Marcelo.png" alt="Marcelo Mattar">
+        <div class="name"><a href="https://sites.google.com/view/mattar-lab" target="_blank">Marcelo Mattar</a></div>
+        <div class="affil">New York University</div>
+      </div>
+
+      <div class="speaker-card">
+        <img src="assets/photos/chris.jpg" alt="Chris Summerfield">
+        <div class="name"><a href="https://csummerfield.github.io/personal_website/" target="_blank">Chris Summerfield</a></div>
+        <div class="affil">Oxford &amp; AISI</div>
+      </div>
+
+      <div class="speaker-card">
+        <img src="assets/photos/mor.jpg" alt="Mor Geva">
+        <div class="name"><a href="https://mega002.github.io/" target="_blank">Mor Geva</a></div>
+        <div class="affil">Tel Aviv University</div>
+      </div>
+
+    </div>
   </div>
 </section>
 
@@ -351,35 +396,50 @@
     <div class="organiser-grid">
 
       <div class="organiser-card">
-        <div class="name"><a href="https://marta-kryven.github.io" target="_blank">Marta Kryven</a></div>
-        <div class="affil">Assistant Professor, Dalhousie University, Canada</div>
+        <img src="assets/marta_photo.jpg" alt="Marta Kryven">
+        <div><div class="name"><a href="https://marta-kryven.github.io" target="_blank">Marta Kryven</a></div>
+        <div class="affil">Assistant Professor, Dalhousie University, Canada</div></div>
       </div>
 
       <div class="organiser-card">
-        <div class="name"><a href="https://evanthebouncy.github.io/" target="_blank">Yewen Pu</a></div>
-        <div class="affil">Assistant Professor, Nanyang Technological University, Singapore</div>
+        <img src="assets/photos/yewen.jpg" alt="Yewen Pu">
+        <div><div class="name"><a href="https://evanthebouncy.github.io/" target="_blank">Yewen Pu</a></div>
+        <div class="affil">Assistant Professor, Nanyang Technological University, Singapore</div></div>
       </div>
 
       <div class="organiser-card">
-        <div class="name"><a href="https://cedriccolas.com/" target="_blank">Cedric Colas</a></div>
-        <div class="affil">Postdoctoral Researcher, Sorbonne &amp; Inria, France</div>
+        <img src="assets/photos/cedric.jpg" alt="Cedric Colas">
+        <div><div class="name"><a href="https://cedriccolas.com/" target="_blank">Cedric Colas</a></div>
+        <div class="affil">Postdoctoral Researcher, Sorbonne &amp; Inria, France</div></div>
       </div>
 
       <div class="organiser-card">
-        <div class="name"><a href="https://momchiltomov.com/" target="_blank">Momchil Tomov</a></div>
-        <div class="affil">Incoming Assistant Professor, Boston College (Harvard)</div>
+        <img src="assets/photos/momchil.png" alt="Momchil Tomov">
+        <div><div class="name"><a href="https://momchiltomov.com/" target="_blank">Momchil Tomov</a></div>
+        <div class="affil">Incoming Assistant Professor, Boston College (Harvard)</div></div>
       </div>
 
       <div class="organiser-card">
-        <div class="name"><a href="http://ivan-titov.org" target="_blank">Ivan Titov</a></div>
-        <div class="affil">Professor, University of Edinburgh &amp; University of Amsterdam</div>
+        <img src="assets/photos/ivan.jpg" alt="Ivan Titov">
+        <div><div class="name"><a href="http://ivan-titov.org" target="_blank">Ivan Titov</a></div>
+        <div class="affil">Professor, University of Edinburgh &amp; University of Amsterdam</div></div>
       </div>
 
     </div>
 
-    <p style="margin-top:1.4rem; font-family:sans-serif; font-size:0.85rem; color:var(--muted);">
-      <strong>Advisory Committee:</strong> Pierre-Yves Oudeyer (Inria, University of Bordeaux) &nbsp;&bull;&nbsp; Leyla Isik (Johns Hopkins University)
-    </p>
+    <h3 style="margin-top:2rem;">Advisory Committee</h3>
+    <div class="organiser-grid" style="margin-top:0.8rem;">
+      <div class="organiser-card">
+        <img src="assets/photos/oudeyer.jpg" alt="Pierre-Yves Oudeyer">
+        <div><div class="name">Pierre-Yves Oudeyer</div>
+        <div class="affil">Inria, University of Bordeaux</div></div>
+      </div>
+      <div class="organiser-card">
+        <img src="assets/photos/leyla.jpg" alt="Leyla Isik">
+        <div><div class="name">Leyla Isik</div>
+        <div class="affil">Johns Hopkins University</div></div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -418,5 +478,163 @@
   <p>Cognitive Interpretability of Foundation Models &mdash; NeurIPS 2026 Workshop</p>
 </footer>
 
+<script>
+(function () {
+  const canvas = document.getElementById('banner-canvas');
+  const ctx = canvas.getContext('2d');
+
+  // ── Config ──────────────────────────────────────────────────────────────────
+  const DIM = 6;
+  const N   = 100;  // nodes
+  const K   = 3;    // nearest-neighbour edges per node
+
+  // ── Seed reproducible random points in [-1, 1]^6 ───────────────────────────
+  // Simple LCG so the graph shape is stable across reloads
+  let seed = 42;
+  function rand() {
+    seed = (seed * 1664525 + 1013904223) & 0xffffffff;
+    return (seed >>> 0) / 0xffffffff;
+  }
+  const nodes = Array.from({length: N}, () =>
+    Array.from({length: DIM}, () => (rand() - 0.5) * 2)
+  );
+
+  // ── KNN edges ───────────────────────────────────────────────────────────────
+  function dist6(a, b) {
+    return Math.sqrt(a.reduce((s, v, i) => s + (v - b[i]) ** 2, 0));
+  }
+  const edges = [];
+  const seen  = new Set();
+  for (let i = 0; i < N; i++) {
+    const nbrs = nodes
+      .map((n, j) => [j, dist6(nodes[i], n)])
+      .filter(([j]) => j !== i)
+      .sort((a, b) => a[1] - b[1])
+      .slice(0, K);
+    for (const [j] of nbrs) {
+      const key = Math.min(i,j) + ',' + Math.max(i,j);
+      if (!seen.has(key)) { seen.add(key); edges.push([i, j]); }
+    }
+  }
+
+  // ── Vector math ─────────────────────────────────────────────────────────────
+  const vdot  = (a, b) => a.reduce((s, v, i) => s + v * b[i], 0);
+  const vscale = (v, s) => v.map(x => x * s);
+  const vsub  = (a, b) => a.map((x, i) => x - b[i]);
+  const vnorm = v => Math.sqrt(vdot(v, v));
+  const vnrm  = v => { const n = vnorm(v); return n < 1e-12 ? v : vscale(v, 1/n); };
+
+  function gramSchmidt(vecs) {
+    const out = [];
+    for (let v of vecs) {
+      let u = [...v];
+      for (const e of out) u = vsub(u, vscale(e, vdot(u, e)));
+      const n = vnorm(u);
+      if (n > 1e-8) out.push(vscale(u, 1/n));
+    }
+    return out;
+  }
+
+  // ── Projection: mouse → (φ, ψ) → three orthonormal 6D vectors ──────────────
+  function getAxes(phi, psi) {
+    const r = Math.PI;
+    const raw = [
+      [ Math.cos(phi),           Math.sin(phi),
+        Math.cos(phi*1.618+0.5), Math.sin(phi*1.618+0.5),
+        Math.cos(phi*0.7+psi*0.5), Math.sin(phi*0.7+psi*0.5) ],
+
+      [ Math.cos(psi+1.0),        Math.sin(psi+1.0),
+        Math.cos(psi*1.3+phi*0.3), Math.sin(psi*1.3+phi*0.3),
+        Math.cos(psi*0.5+0.8),     Math.sin(psi*0.5+0.8) ],
+
+      [ Math.cos(phi*0.4+psi*0.8+2.0), Math.sin(phi*0.4+psi*0.8+2.0),
+        Math.cos(phi*1.1+1.5),         Math.sin(phi*1.1+1.5),
+        Math.cos(psi*0.9+phi*0.2),     Math.sin(psi*0.9+phi*0.2) ],
+    ];
+    return gramSchmidt(raw);  // [u, v, w]  – x, y, depth
+  }
+
+  // ── State ───────────────────────────────────────────────────────────────────
+  let phi = 1.0, psi = 1.0;
+  let tPhi = phi, tPsi = psi;
+  let mouseOver = false;
+
+  const hero = document.getElementById('home');
+  hero.addEventListener('mousemove', e => {
+    const r = hero.getBoundingClientRect();
+    tPhi = ((e.clientX - r.left) / r.width)  * Math.PI * 3;
+    tPsi = ((e.clientY - r.top)  / r.height) * Math.PI * 3;
+    mouseOver = true;
+  });
+  hero.addEventListener('mouseleave', () => { mouseOver = false; });
+
+  // ── Resize ──────────────────────────────────────────────────────────────────
+  function resize() {
+    canvas.width  = hero.offsetWidth;
+    canvas.height = hero.offsetHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  // ── Render loop ─────────────────────────────────────────────────────────────
+  function frame(ts) {
+    const t = ts / 1000;
+
+    // Idle drift when mouse is away
+    if (!mouseOver) {
+      tPhi = Math.PI + Math.cos(t * 0.25) * Math.PI * 0.9;
+      tPsi = Math.PI + Math.sin(t * 0.17) * Math.PI * 0.7;
+    }
+
+    // Smooth follow
+    phi += (tPhi - phi) * 0.05;
+    psi += (tPsi - psi) * 0.05;
+
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+
+    const axes = getAxes(phi, psi);
+    if (axes.length < 2) { requestAnimationFrame(frame); return; }
+    const [u, v, w] = axes;
+
+    const scale = Math.min(W, H) * 0.40;
+    const cx = W / 2, cy = H / 2;
+
+    // Project
+    const pts = nodes.map(p => ({
+      x: cx + vdot(p, u) * scale,
+      y: cy + vdot(p, v) * scale,
+      z: axes[2] ? vdot(p, w) : 0,   // depth in [-1, 1]
+    }));
+
+    // Edges
+    for (const [i, j] of edges) {
+      const a = pts[i], b = pts[j];
+      const depth = ((a.z + b.z) / 2 + 1) / 2;   // 0–1
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.strokeStyle = `rgba(196,168,106,${0.08 + depth * 0.22})`;
+      ctx.lineWidth = 0.7 + depth * 0.6;
+      ctx.stroke();
+    }
+
+    // Nodes — painter's sort (back to front)
+    const sorted = pts.map((p, i) => ({...p, i})).sort((a, b) => a.z - b.z);
+    for (const {x, y, z} of sorted) {
+      const d = (z + 1) / 2;   // 0=back, 1=front
+      const r = 1.5 + d * 3.5;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(232,212,168,${0.25 + d * 0.75})`;
+      ctx.fill();
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+  requestAnimationFrame(frame);
+})();
+</script>
 </body>
 </html>
